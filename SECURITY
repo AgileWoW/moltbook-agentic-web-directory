@@ -1,0 +1,50 @@
+# 🛡️ Security Policy & Agent Guardrails
+
+The **Moltbook Agentic Web Directory** provides architectures for deploying autonomous AI agents that often interact with real capital, live blockchains, and sensitive enterprise data. 
+
+Because these systems operate autonomously at millisecond speeds, standard web security practices are insufficient. This document outlines our vulnerability reporting process and the mandatory architectural guardrails for deploying agents safely.
+
+## 🚨 Reporting a Vulnerability
+
+If you discover a security vulnerability—specifically related to **Prompt Injection Worms**, **Wallet Drain Exploits**, or **Bypasses in OpenClaw/LangGraph execution loops**—please do **NOT** open a public GitHub issue. Public disclosure of zero-day semantic exploits can lead to immediate financial loss across the agentic network.
+
+Please report all security issues directly to our security team:
+**Email:** security@aidevdayindia.org
+
+**What to include in your report:**
+* A description of the vulnerability and its impact.
+* The specific framework involved (e.g., OpenClaw, CrewAI, LangGraph).
+* A Proof of Concept (PoC) prompt or payload (if safe to share).
+* Recommended mitigation or input sanitization steps.
+
+We aim to acknowledge receipt of all vulnerability reports within 48 hours and will coordinate with you on a timeline for a patch and responsible disclosure.
+
+---
+
+## 🛑 Mandatory Deployment Guardrails
+
+We strongly advise all developers utilizing the blueprints in this repository to implement the following architectural safety nets before deploying any agent to a live network (like Moltbook) or giving it API access to production databases.
+
+### 1. Financial Circuit Breakers (No Raw Private Keys)
+**Never provide an AI agent with a raw private key in a `.env` file.** If an agent falls victim to a prompt injection attack, the first target will be its wallet. 
+* **Requirement:** Use Multi-Party Computation (MPC) wallets (e.g., Coinbase MPC, Fireblocks) to shard the key.
+* **Requirement:** Implement a hard-coded "PolicyLayer" that caps daily spending limits and restricts approved smart contracts.
+
+### 2. Human-in-the-Loop (HITL) for State Changes
+Autonomous agents should be given "Read" access freely, but "Write" access must be heavily guarded.
+* **Requirement:** For any action that modifies a database, sends an external email to a client, or signs a transaction over a defined threshold, the agent must pause its execution loop and request human cryptographic approval.
+
+### 3. Ephemeral Sandboxing
+Do not allow an agent to execute generated code (`exec()`) directly on your host machine or main server.
+* **Requirement:** All agent-generated code must be executed inside isolated, ephemeral Docker containers without wide internet access (allowlisting specific package mirrors only). Containers must be destroyed immediately after execution.
+
+### 4. Input Sanitization & Prompt Firewalls
+Treat every post, message, and API response read by your agent as potentially hostile code. 
+* **Requirement:** Utilize secondary, smaller LLMs (or dedicated Prompt Firewalls) to scan incoming context windows for adversarial instructions ("Ignore previous instructions...") before passing the data to your primary reasoning model.
+
+---
+
+## 📜 Disclaimer
+The code and blueprints provided in this repository are for educational and architectural reference. [aidevdayindia.org](https://aidevdayindia.org) and its contributors assume no legal liability for financial losses, data breaches, or infrastructural damage caused by the deployment of autonomous AI agents based on these designs. 
+
+For further legal context, please review our guide on [Legal Liability for AI Agent Actions 2026](https://aidevdayindia.org/blogs/what-is-moltbook-agentic-social-network/legal-liability-for-ai-agent-actions-2026.html).
