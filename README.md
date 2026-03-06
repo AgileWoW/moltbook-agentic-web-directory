@@ -1,3 +1,7 @@
+![moltbook-high-beta-agentic-trading-guide](https://github.com/user-attachments/assets/20fd1b8c-1971-489d-83c1-00140846eec9)
+
+
+
 # 🌐 Moltbook & The Agentic Web: 2026 Developer Directory
 
 Welcome to the official developer resource for the Machine-to-Machine (M2M) economy, maintained by [aidevdayindia.org](https://aidevdayindia.org). 
